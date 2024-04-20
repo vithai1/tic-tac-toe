@@ -71,7 +71,10 @@ export default function Game() {
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
-      description = 'Go to move #' + move;
+      const prev = history[move - 1];
+      const col = squares.findIndex((square, index) => square !== prev[index]);
+      const row = Math.floor(col / 3);
+      description = `Go to move #${move} (${col % 3}, ${row})`;
     } else {
       description = 'Go to game start';
     }
@@ -83,6 +86,7 @@ export default function Game() {
   });
 
   return (
+    <div className='game-container'>
     <div className="game">
       <div className="game-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
@@ -90,6 +94,7 @@ export default function Game() {
       <div className="game-info">
         <ol>{moves}</ol>
       </div>
+    </div>
     </div>
   );
 }
